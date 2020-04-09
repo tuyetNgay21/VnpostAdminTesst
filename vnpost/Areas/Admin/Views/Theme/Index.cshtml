@@ -1,0 +1,128 @@
+﻿@using vnpost.Models.connectDB;
+@model IsTheme
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Search/View_LayOut.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Thêm Một Chủ Đề Mới
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            <div class="panel-body">
+                <div class="form-group has-success">
+                    <div class="col-sm-7">
+                        <input class="form-control" id="fileUpLoadImgChuDe" type="file" name="file" style="display:none;" />
+                    </div>
+                    <br />
+                    <button type="submit" id="BtnUpLoadFileImgChuDe" class="btn btn-success">Tải ảnh Lên</button>
+                </div>
+                <div class="text-center">
+                    <img src="@Model.AvatarTheme" id="ImgUpLoadShowUserView" style="width:12em; height:12em; margin-bottom:1em;" class="rounded" alt="...">
+                </div>
+                <form role="form" class="form-horizontal ">
+                    <div class="form-group has-success">
+                        <label asp-for="ThemeId" class="col-lg-3 control-label">Tên Chủ Đề</label>
+                        <div class="col-lg-6">
+                            <input asp-for="ThemeId" placeholder="" id="f-name" class="form-control"readonly="readonly">
+                            <span asp-validation-for="ThemeId" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <label asp-for="Isname" class="col-lg-3 control-label">Tên Chủ Đề</label>
+                        <div class="col-lg-6">
+                            <input asp-for="Isname" placeholder="" id="f-name" class="form-control">
+                            <span asp-validation-for="Isname" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <label asp-for="IsTitle" class="col-lg-3 control-label">Tiêu đề</label>
+                        <div class="col-lg-6">
+                            <input asp-for="IsTitle" placeholder="" id="f-name" class="form-control">
+                            <span asp-validation-for="IsTitle" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <label asp-for="Deleted" class="col-lg-3 control-label">Trạng Thái Xóa</label>
+                        <div class="col-lg-6">
+                            <input asp-for="Deleted" placeholder="" id="f-name" class="form-control">
+                            <span asp-validation-for="Deleted" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <label asp-for="AvatarTheme" class="col-lg-3 control-label">Ảnh Chủ Đề</label>
+                        <div class="col-lg-6">
+                            <input asp-for="AvatarTheme" placeholder="" id="f-name " class="form-control AnhChuDeAddLen" readonly="readonly">
+                            <span asp-validation-for="AvatarTheme" class="help-block"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-offset-3 col-lg-6">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+@{
+    var Listtheme = (List<IsTheme>)ViewBag.AllTheme;
+}
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Xem chủ đề đã có
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            <div class="panel-body">
+                @if (Listtheme == null)
+                {
+                    <h5>Không có dữ liệu</h5>
+                }
+                else
+                {
+                    <table class="table table-sm table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mã số</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Tiêu đề</th>
+                                <th scope="col">Đã Xóa</th>
+                                <th scope="col">Avata</th>
+                                <th scope="col">Sửa</th>
+                                <th scope="col">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ik in Listtheme)
+                            {
+                            <tr>
+                                <th scope="row">@ik.ThemeId</th>
+                                <td>@ik.Isname</td>
+                                <td>@ik.IsTitle</td>
+                                <td>@ik.Deleted</td>
+                                <td><img src="@ik.AvatarTheme" style="height:50px ; width:50px;" alt="@ik.IsTitle" /></td>
+                                <td><a href="/ThemeAdmin?id=@ik.ThemeId">Sửa</a></td>
+                                <td><a href="/DeleteThemeAdmin?id=@ik.ThemeId">Xóa</a></td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </section>
+    </div>
+</div>
+

@@ -1,0 +1,258 @@
+﻿@using vnpost.Models.connectDB;
+@model IsPost
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Search/View_LayOut.cshtml";
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/ckeditor/ckeditor.js"></script>
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Thêm Một Bài Viết Mới
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            <div class="panel-body">
+                <div class="form-group has-success">
+                    <div class="col-sm-7">
+                        <input class="form-control" id="fileUpLoadImgPost" type="file" name="file" style="display:none;" />
+                    </div>
+                    <br />
+                    <button type="submit" id="BtnUpLoadFileImgPost" class="btn btn-success">Tải ảnh Lên</button>
+                </div>
+                <div class="text-center">
+                    <img src="@Model.AvataIndex" id="ImgUpLoadShowUserView" style="width:12em; height:12em; margin-bottom:1em;" class="rounded" alt="...">
+                </div>
+                @*Nhập nội dung bài viết*@
+                <textarea id="editor" class="form-control" rows="5" required>@Model.Content</textarea>
+                <button class="btn btn-outline-success ViewCkEditor">XEM</button>
+                <form role="form" class="form-horizontal ">
+                    <div class="form-group has-success">
+                        <label asp-for="Title" class="col-lg-3 control-label">Tiêu đề</label>
+                        <div class="col-lg-6">
+                            <input asp-for="Title" placeholder="" id="f-name" class="form-control">
+                            <span asp-validation-for="Title" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <label asp-for="Content" class="col-lg-3 control-label">Nội dung</label>
+                        <div class="col-lg-6">
+                            <input asp-for="Content" placeholder="" id="f-name " class="form-control ContentPostViewAdmin" readonly="readonly">
+                            <span asp-validation-for="Content" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <label asp-for="Deleted" class="col-lg-3 control-label">Trạng Thái Xóa</label>
+                        <div class="col-lg-6">
+                            <input asp-for="Deleted" placeholder="" id="f-name" class="form-control">
+                            <span asp-validation-for="Deleted" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <label asp-for="AvataIndex" class="col-lg-3 control-label">Ảnh Loại chủ đề</label>
+                        <div class="col-lg-6">
+                            <input asp-for="AvataIndex" placeholder="" id="f-name" class="form-control AnhChuDeAddLen " readonly="readonly">
+                            <span asp-validation-for="AvataIndex" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group has-success">
+                        <label asp-for="SpeciesId" class="col-lg-3 control-label">Cùng Loại Với Loại Chủ Đề</label>
+                        <div class="col-lg-6">
+                            <input asp-for="SpeciesId" placeholder="" id="f-name" class="form-control">
+                            <span asp-validation-for="SpeciesId" class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-3 col-lg-6">
+                            <button class="btn btn-primary" type="submit">Tải Lên</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Xem Bài Viết Hiển Thị Ra
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            <div class="panel-body">
+                <div id="ViewDataCKEditor">
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Xem Bài Viết đã có
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            <div class="panel-body">
+                @{
+                    var Listtheme1 = (List<IsPost>)ViewBag.AllBaiViet;
+                }
+                <div class="panel-body">
+                    @if (Listtheme1 == null)
+                    {
+                        <h5>Không có dữ liệu</h5>
+                    }
+                    else
+                    {
+                        <table class="table table-sm table-dark">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Mã số</th>
+                                    <th scope="col">Mã Loại chủ đề</th>
+                                    <th scope="col">Tiêu đề</th>
+                                    <th scope="col">Ngày Đăng Tải Gần Nhất</th>
+                                    <th scope="col">Nội Dung</th>
+                                    <th scope="col">Lượt Xem</th>
+                                    <th scope="col">Đã Xóa</th>
+                                    <th scope="col">Avata</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ik in Listtheme1)
+                                {
+                                <tr>
+                                    <th scope="row">@ik.PostId</th>
+                                    <th scope="row">@ik.SpeciesId</th>
+                                    <td>@ik.Title</td>
+                                    <td>@ik.DayInPost</td>
+                                    <td>@ik.Content.Substring(5, 10)</td>
+                                    <td>@ik.ViewPost</td>
+                                    <td>@ik.Deleted</td>
+                                    <td><img src="@ik.AvataIndex" style="height:50px ; width:50px;" alt="@ik.Title" /></td>
+                                    <td><a href="/PostAdmin?id=@ik.PostId">Sửa</a></td>
+                                    <td><a href="/DeletePostAdmin?id=@ik.PostId">Xóa</a></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+</section>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Xem  chủ đề đã có
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            @{
+                var Listtheme = (List<IsTheme>)ViewBag.AllChuDe;
+            }
+            <div class="panel-body">
+                @if (Listtheme == null)
+                {
+                    <h5>Không có dữ liệu</h5>
+                }
+                else
+                {
+                    <table class="table table-sm table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mã số</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Tiêu đề</th>
+                                <th scope="col">Đã Xóa</th>
+                                <th scope="col">Avata</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ik in Listtheme)
+                            {
+                                <tr>
+                                    <th scope="row">@ik.ThemeId</th>
+                                    <td>@ik.Isname</td>
+                                    <td>@ik.IsTitle</td>
+                                    <td>@ik.Deleted</td>
+                                    <td><img src="@ik.AvatarTheme" style="height:50px ; width:50px;" alt="@ik.IsTitle" /></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </section>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Xem Loại chủ đề đã có
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            @{
+                var AllLoaiChuDe = (List<IsSpecies>)ViewBag.AllLoaiChuDe;
+            }
+            <div class="panel-body">
+                @if (AllLoaiChuDe == null)
+                {
+                    <h5>Không có dữ liệu</h5>
+                }
+                else
+                {
+                    <table class="table table-sm table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mã số</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Tiêu đề</th>
+                                <th scope="col">Đã Xóa</th>
+                                <th scope="col">Mã chủ đề</th>
+                                <th scope="col">Loại chủ đề chung</th>
+                                <th scope="col">Avata</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ik in AllLoaiChuDe)
+                            {
+                                <tr>
+                                    <th scope="row">@ik.SpeciesId</th>
+                                    <td>@ik.Isname</td>
+                                    <td>@ik.IsTitle</td>
+                                    <td>@ik.Deleted</td>
+                                    <td>@ik.ThemeId</td>
+                                    <td>@ik.ThemeDab</td>
+                                    <td><img src="@ik.AvatarSpecies" style="height:50px ; width:50px;" alt="@ik.SpeciesId" /></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </section>
+    </div>
+</div>
+<script src="~/Admin/Admin.js"></script>
+
+
+
+

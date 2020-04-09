@@ -1,0 +1,160 @@
+﻿
+@using vnpost.Models.connectDB;
+@model IsNavSinger
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Search/View_LayOut.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Thanh menu đang chọn
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            @{ 
+                var HHH = (List<IsTheme>)ViewBag.DanhSachDangChon;
+                int ijl = 0;
+            }
+            <div class="panel-body">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                    
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            @if (HHH == null)
+                            {
+                                <h5>Không có dữ liệu </h5>
+                            }
+                            else
+                            {
+                                @foreach (var ik in HHH)
+                                {
+                                    if (ijl == 0)
+                                    {
+                                        <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-item nav-link " href="#">Home <span class="sr-only">(current)</span></a>
+                                    }
+
+                                }
+                            }
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </section>
+    </div>
+</div>
+@{
+    var Listtheme = (List<IsTheme>)ViewBag.AllTheme;
+}
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Xem ảnh menu đơn đã có
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            <div class="panel-body">
+                @if (Listtheme == null)
+                {
+                    <h5>Không có dữ liệu</h5>
+                }
+                else
+                {
+                    <table class="table table-sm table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mã</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Tiêu đề</th>
+                                <th scope="col">Đã Xóa</th>
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">Tạo Menu</th>
+                                <th scope="col">Thêm Vào Menu Đang Chọn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ik in Listtheme)
+                            {
+                                <tr>
+                                    <th scope="row">@ik.ThemeId</th>
+                                    <td>@ik.Isname</td>
+                                    <td>@ik.IsTitle</td>
+                                    <td>@ik.Deleted</td>
+                                    <td><img src="@ik.AvatarTheme" style="height:50px ; width:50px;" alt="@ik.Isname" /></td>
+                                    <td><a href="/MenuDauTien?id=@ik.ThemeId">Tạo</a></td>
+                                    <td><a href="/ThemThanhPhanMenu?id=@ik.ThemeId">Chọn</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </section>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Tất cả Thanh menu đang có
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                    <a class="fa fa-cog" href="javascript:;"></a>
+                </span>
+            </header>
+            <div class="panel-body">
+                @{
+                    var iht = (List<int?>)ViewBag.HienThiRaTatCaMenu;
+                }
+                @if (iht == null)
+                {
+                    <h5>Không có dữ liệu</h5>
+                }
+                else
+                {
+                    <table class="table table-sm table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mã số</th>
+                                <th scope="col">Chọn Để Chỉnh Sửa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ik in iht)
+                            {
+                                <tr>
+                                    <th scope="row">@ik</th>
+                                    <td><a href="/MenuChon?id=@ik">Chọn</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </section>
+    </div>
+</div>
+@section name{
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+}
+
+
+
+
